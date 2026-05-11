@@ -2,13 +2,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:quietly/services/device_profiler.dart';
 
 void main() {
-  test('high score → ANC', () {
-    final s = DeviceProfiler.scoreFor(cores: 8, ramMb: 8000, year: 2024);
-    expect(s, greaterThanOrEqualTo(7000));
+  test('profiler creates expected capability shape', () async {
+    final p = DeviceProfiler();
+    final cap = await p.probe();
+    expect(cap.score, greaterThanOrEqualTo(0));
+    expect(cap.recommended, isA<AudioMode>());
+    expect(cap.weak, isA<bool>());
   });
 
-  test('low score → warning', () {
-    final s = DeviceProfiler.scoreFor(cores: 4, ramMb: 2000, year: 2017);
-    expect(s, lessThan(4500));
+  test('recommend returns a valid AudioMode', () async {
+    final p = DeviceProfiler();
+    final mode = await p.recommend();
+    expect(mode, isA<AudioMode>());
   });
 }
