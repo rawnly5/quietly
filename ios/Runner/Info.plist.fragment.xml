@@ -1,0 +1,7 @@
+<!-- ضع هذه القيم داخل Info.plist الرئيسي -->
+<key>NSMicrophoneUsageDescription</key>
+<string>نحتاج الميكروفون لالتقاط الضوضاء المحيطة وعزلها قبل وصولها لسماعتك.</string>
+<key>UIBackgroundModes</key>
+<array>
+  <string>audio</string>
+</array>

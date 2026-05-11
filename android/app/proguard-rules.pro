@@ -1,0 +1,4 @@
+-keep class io.flutter.** { *; }
+-keep class com.quietly.app.** { *; }
+-dontwarn io.flutter.**
+-keepclassmembers class * { @io.flutter.plugin.common.PluginMethod *; }
