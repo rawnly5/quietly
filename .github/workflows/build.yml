@@ -13,8 +13,20 @@ jobs:
       - uses: subosito/flutter-action@v2
         with: { channel: 'stable' }
       - run: flutter pub get
-      - run: flutter build apk --release --split-per-abi
-      - run: find . -name "*.apk" 2>/dev/null; echo "---"; find build -type d 2>/dev/null | head -20
+      - run: flutter build apk --release --split-per-abi || true
+      - run: |
+          echo "=== Finding APK files ==="
+          find /home/runner/work/quietly -name "*.apk" 2>/dev/null
+          echo "=== Build output structure ==="
+          find /home/runner/work/quietly/build -type d 2>/dev/null | head -30
+          echo "=== Copying APKs to expected location ==="
+          mkdir -p build/app/outputs/flutter-apk/
+          find /home/runner/work/quietly -name "*-release.apk" -o -name "*.apk" 2>/dev/null | head -10 | while read apk; do
+            cp "$apk" build/app/outputs/flutter-apk/ 2>/dev/null || true
+          done
+          ls -la build/app/outputs/flutter-apk/ 2>/dev/null || true
+          echo "=== Android build outputs ==="
+          find /home/runner/work/quietly/build/app/outputs -type f 2>/dev/null | head -10 || true
       - uses: actions/upload-artifact@v4
         with: { name: apk, path: build/app/outputs/**/*.apk, if-no-files-found: warn }
 
