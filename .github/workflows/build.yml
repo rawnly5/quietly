@@ -14,8 +14,9 @@ jobs:
         with: { channel: 'stable' }
       - run: flutter pub get
       - run: flutter build apk --release --split-per-abi --verbose
+      - run: find . -name "*.apk" 2>/dev/null; echo "---"; find build -type d 2>/dev/null | head -20
       - uses: actions/upload-artifact@v4
-        with: { name: apk, path: build/app/outputs/flutter-apk/*.apk }
+        with: { name: apk, path: build/app/outputs/**/*.apk }
 
   ios:
     runs-on: macos-14
